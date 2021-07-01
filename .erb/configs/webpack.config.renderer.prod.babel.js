@@ -52,7 +52,19 @@ export default merge(baseConfig, {
             },
           },
           'css-loader',
-          'sass-loader'
+          'sass-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins:
+                  [
+                    require('tailwindcss'),
+                    require('autoprefixer'),
+                  ]
+              }
+            }
+          }
         ],
       },
       // WOFF Font
