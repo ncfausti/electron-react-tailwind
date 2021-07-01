@@ -1,7 +1,14 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
+  "name": "cord-desktop",
+  "productName": "Cord Desktop",
+  "version": "0.3",
+  "description": "Desktop applciation to organize and analyze engagements.",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Nick Fausti",
+    "email": "nick@smile-ml.com",
+    "url": "https://github.com/vizaiapp/cord-desktop"
+  },
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -9,6 +16,7 @@
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir src",
     "lint": "cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx",
     "package": "rm -rf src/dist && yarn build && electron-builder build --publish never",
+    "package-win": "rm -rf src/dist && yarn build && electron-builder build --publish never --win portable",
     "postinstall": "node -r @babel/register .erb/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.babel.js && opencollective-postinstall && yarn-deduplicate yarn.lock",
     "start": "node -r @babel/register ./.erb/scripts/CheckPortInUse.js && yarn start:renderer",
     "start:main": "cross-env NODE_ENV=development electron -r ./.erb/scripts/BabelRegister ./src/main.dev.ts",
@@ -30,8 +38,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Cord Desktop",
+    "appId": "org.smileml.CordDesktop",
     "files": [
       "dist/",
       "node_modules/",
@@ -86,34 +94,24 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "vizaiapp",
+      "repo": "cord-desktop"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
-  },
-  "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "url": "git+https://github.com/vizaiapp/cord-desktop.git"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
-    },
-    {
-      "name": "John Tran",
-      "email": "jptran318@gmail.com",
-      "url": "https://github.com/jooohhn"
+      "name": "Ethan Petersen",
+      "email": "ethan@smile-ml.com",
+      "url": "https://github.com/vizaiapp"
     }
   ],
-  "license": "MIT",
+  "license": "None",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/vizaiapp/cord-desktop/issues"
   },
   "keywords": [
     "electron",
@@ -124,9 +122,11 @@
     "sass",
     "webpack",
     "hot",
-    "reload"
+    "reload",
+    "tailwind",
+    "cord"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/vizaiapp/cord-desktop#readme",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
@@ -266,9 +266,6 @@
     "node": ">=10.x",
     "npm": ">=6.x",
     "yarn": ">=1.21.3"
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "browserslist": [],
   "prettier": {
