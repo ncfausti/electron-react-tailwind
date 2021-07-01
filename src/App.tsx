@@ -12,12 +12,7 @@ const TailwindHello = () => {
           <div className="max-w-md mx-auto">
             <div>
               <h2 className="text-1xl tracking-tight font-extrabold text-gray-900 sm:text-2xl md:text-3xl">
-                <span className="block xl:inline">
-                  electron-react-boilerplate +
-                </span>
-                <span className="block text-indigo-600 xl:inline">
-                  TailwindCSS
-                </span>
+                Cord starter
               </h2>
               <img
                 src={icon}
