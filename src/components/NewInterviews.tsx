@@ -4,6 +4,22 @@ import {
   LocationMarkerIcon,
   UsersIcon,
 } from '@heroicons/react/solid';
+import { fmtTime } from '../utils';
+
+const lipsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+  ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+  aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+  in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+  sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+  mollit anim id est laborum.`;
+
+const date = new Date();
+const [month, day, year] = [
+  date.getMonth(),
+  date.getDate(),
+  date.getFullYear(),
+];
 
 const positions = [
   {
@@ -33,19 +49,41 @@ const positions = [
     closeDate: '2020-01-14',
     closeDateFull: 'January 14, 2020',
   },
+  {
+    id: 4,
+    title: 'Interview Name',
+    type: 'Full-time',
+    location: 'Remote',
+    department: 'Participant 2, Participant 3',
+    closeDate: '2020-01-14',
+    closeDateFull: 'January 14, 2020',
+  },
+  {
+    id: 5,
+    title: 'Interview Name',
+    type: 'Full-time',
+    location: 'Remote',
+    department: 'Participant 7',
+    closeDate: '2020-01-14',
+    closeDateFull: 'January 14, 2020',
+  },
 ];
 
 export default function NewInterviews() {
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-md">
+    <div className="mt-4 bg-cordGray-darker shadow overflow-hidden">
       <ul className="divide-y divide-gray-200">
         {positions.map((position) => (
           <li key={position.id}>
-            <a href="#" className="block hover:bg-gray-50">
+            <a href="#" className="block hover:bg-gray-800">
               <div className="px-4 py-4 sm:px-6">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-indigo-600 truncate">
+                  <p className="text-sm font-medium text-white truncate">
                     {position.title}
+                    <br />
+                    <span className="font-thin">{`${month}/${day}/${year} ${fmtTime(
+                      date
+                    )}`}</span>
                   </p>
                   <div className="ml-2 flex-shrink-0 flex">
                     <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">

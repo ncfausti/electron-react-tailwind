@@ -1,7 +1,7 @@
 {
   "name": "cord-desktop",
   "productName": "Cord Desktop",
-  "version": "0.3",
+  "version": "0.3.0",
   "description": "Desktop applciation to organize and analyze engagements.",
   "main": "./main.prod.js",
   "author": {
@@ -109,7 +109,7 @@
       "url": "https://github.com/vizaiapp"
     }
   ],
-  "license": "None",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/vizaiapp/cord-desktop/issues"
   },
