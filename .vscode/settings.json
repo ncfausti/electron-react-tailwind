@@ -6,9 +6,10 @@
     ".eslintignore": "ignore"
   },
 
-  "javascript.validate.enable": false,
-  "javascript.format.enable": false,
-  "typescript.format.enable": false,
+  "javascript.validate.enable": true,
+  "javascript.format.enable": true,
+  "typescript.format.enable": true,
+  "editor.formatOnSave": true,
 
   "search.exclude": {
     ".git": true,
@@ -17,9 +18,9 @@
     "src/main.prod.js": true,
     "src/main.prod.js.map": true,
     "bower_components": true,
+    "node_modules": true,
     "dll": true,
     "release": true,
-    "node_modules": true,
     "npm-debug.log.*": true,
     "test/**/__snapshots__": true,
     "yarn.lock": true,
