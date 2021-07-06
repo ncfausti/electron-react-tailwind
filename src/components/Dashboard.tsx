@@ -1,20 +1,15 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
   HomeIcon,
-  InboxIcon,
-  MenuIcon,
   UsersIcon,
+  MenuIcon,
   XIcon,
   AnnotationIcon,
 } from '@heroicons/react/outline';
 import NewInterviews from './NewInterviews';
 
 import icon from '../../assets/icons/cord-logo.png';
-import InterviewsIcon from '../../assets/icon.svg';
 
 const navigation = [
   { name: 'Home', href: '#', icon: HomeIcon, current: true },
@@ -111,7 +106,7 @@ export default function Dashboard() {
                 </nav>
               </div>
               <div className="flex-shrink-0 flex bg-gray-700 p-4">
-                <a href="#" className="flex-shrink-0 group block">
+                <a href="/" className="flex-shrink-0 group block">
                   <div className="flex items-center">
                     <div>
                       <img
@@ -176,7 +171,7 @@ export default function Dashboard() {
               </nav>
             </div>
             <div className="flex-shrink-0 flex bg-gray-700 p-4">
-              <a href="#" className="flex-shrink-0 w-full group block">
+              <a href="/" className="flex-shrink-0 w-full group block">
                 <div className="flex items-center">
                   <div>
                     <img
@@ -212,7 +207,7 @@ export default function Dashboard() {
         </div>
         <main className="flex-1 relative z-0 bg-cordGray-darkest overflow-y-auto focus:outline-none">
           <div className="py-5">
-            <div className="max-w-7xl mx-6 pb-2 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
+            <div className="mx-6 pb-2 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
               <h1 className="text-2xl font-thin text-gray-100 pb-3">Home</h1>
               <div className="flex-shrink-0">
                 <button
@@ -223,12 +218,12 @@ export default function Dashboard() {
                 </button>
               </div>
             </div>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <div className="mx-auto px-4 sm:px-6 md:px-8">
               {/* Replace with your content */}
               <div className="py-4">
                 <div className="rounded-3xl h-96 bg-cordPurple py-5">
                   <div className="-mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
-                    <div className="flex-grow">
+                    <div className="overflow-hidden">
                       <h3 className="ml-4 text-lg leading-6 font-light text-white">
                         New Interviews
                       </h3>

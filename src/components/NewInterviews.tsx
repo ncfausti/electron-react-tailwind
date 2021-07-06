@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  CalendarIcon,
   LocationMarkerIcon,
   UsersIcon,
+  AnnotationIcon,
 } from '@heroicons/react/solid';
-import { fmtTime } from '../utils';
+import fmtTime from '../utils/index';
 
 const lipsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
   eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -27,6 +27,7 @@ const positions = [
     title: 'Interview Name',
     type: 'Full-time',
     location: 'Remote',
+    description: lipsum,
     department: 'Participant 1',
     closeDate: '2020-01-07',
     closeDateFull: 'January 7, 2020',
@@ -36,6 +37,7 @@ const positions = [
     title: 'Interview Name',
     type: 'Full-time',
     location: 'Remote',
+    description: lipsum,
     department: 'Participant 2',
     closeDate: '2020-01-07',
     closeDateFull: 'January 7, 2020',
@@ -45,6 +47,7 @@ const positions = [
     title: 'Interview Name',
     type: 'Full-time',
     location: 'Remote',
+    description: lipsum,
     department: 'Participant 1, Participant 2',
     closeDate: '2020-01-14',
     closeDateFull: 'January 14, 2020',
@@ -54,6 +57,7 @@ const positions = [
     title: 'Interview Name',
     type: 'Full-time',
     location: 'Remote',
+    description: lipsum,
     department: 'Participant 2, Participant 3',
     closeDate: '2020-01-14',
     closeDateFull: 'January 14, 2020',
@@ -63,6 +67,7 @@ const positions = [
     title: 'Interview Name',
     type: 'Full-time',
     location: 'Remote',
+    description: lipsum,
     department: 'Participant 7',
     closeDate: '2020-01-14',
     closeDateFull: 'January 14, 2020',
@@ -75,7 +80,7 @@ export default function NewInterviews() {
       <ul className="divide-y divide-gray-200">
         {positions.map((position) => (
           <li key={position.id}>
-            <a href="#" className="block hover:bg-gray-800">
+            <a href="/" className="block hover:bg-gray-800">
               <div className="px-4 py-4 sm:px-6">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-white truncate">
@@ -84,6 +89,10 @@ export default function NewInterviews() {
                     <span className="font-thin">{`${month}/${day}/${year} ${fmtTime(
                       date
                     )}`}</span>
+                    <br />
+                    <span className="line-clamp-2 font-thin text-sm">
+                      {position.description}
+                    </span>
                   </p>
                   <div className="ml-2 flex-shrink-0 flex">
                     <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -109,12 +118,12 @@ export default function NewInterviews() {
                     </p>
                   </div>
                   <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                    <CalendarIcon
+                    <AnnotationIcon
                       className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                       aria-hidden="true"
                     />
                     <p>
-                      Closing on{' '}
+                      Comments{' '}
                       <time dateTime={position.closeDate}>
                         {position.closeDateFull}
                       </time>
