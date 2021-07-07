@@ -1,31 +1,20 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import {
-  HomeIcon,
-  UsersIcon,
-  MenuIcon,
-  XIcon,
-  AnnotationIcon,
-} from '@heroicons/react/outline';
-import NewInterviews from './NewInterviews';
-
+import { XIcon } from '@heroicons/react/outline';
+import { Link, useLocation } from 'react-router-dom';
+import { navigation } from '../../data';
 import icon from '../../assets/icons/cord-logo.png';
-
-const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
-  { name: 'Interviews', href: '#', icon: AnnotationIcon, current: false },
-  { name: 'Contacts', href: '#', icon: UsersIcon, current: false },
-];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Dashboard() {
+export default function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
 
   return (
-    <div className="h-screen flex overflow-hidden bg-cordBlack">
+    <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -83,9 +72,9 @@ export default function Dashboard() {
                   {navigation.map((item) => (
                     <a
                       key={item.name}
-                      href={item.href}
+                      href={item.path}
                       className={classNames(
-                        item.current
+                        false
                           ? 'bg-cordGray text-white'
                           : 'text-gray-100 hover:bg-cordGray hover:text-white',
                         'group flex items-center px-2 py-2 text-base font-thin rounded-md'
@@ -93,7 +82,7 @@ export default function Dashboard() {
                     >
                       <item.icon
                         className={classNames(
-                          item.current
+                          false
                             ? 'text-gray-100'
                             : 'text-gray-400 group-hover:bg-cordGray',
                           'mr-4 flex-shrink-0 h-6 w-6'
@@ -133,7 +122,6 @@ export default function Dashboard() {
           </div>
         </Dialog>
       </Transition.Root>
-
       {/* Static sidebar for desktop */}
       <div className="hidden md:flex md:flex-shrink-0">
         <div className="flex flex-col w-64">
@@ -146,27 +134,29 @@ export default function Dashboard() {
               </div>
               <nav className="mt-5 flex-1 px-2 bg-cordGray-darker space-y-1">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? 'bg-cordGray text-white'
-                        : 'text-gray-100 hover:bg-cordGray hover:text-white',
-                      'group flex items-center px-2 py-2 text-sm font-thin rounded-md'
-                    )}
-                  >
-                    <item.icon
-                      className={classNames(
-                        item.current
-                          ? 'text-gray-100'
-                          : 'text-gray-400 group-hover:text-gray-100',
-                        'mr-3 flex-shrink-0 h-6 w-6'
-                      )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </a>
+                  <>
+                    <Link key={item.name} to={item.path}>
+                      <span
+                        className={classNames(
+                          false
+                            ? 'bg-cordGray text-white'
+                            : 'text-gray-100 hover:bg-cordGray hover:text-white',
+                          'group flex items-center px-2 py-2 text-sm font-thin rounded-md'
+                        )}
+                      >
+                        <item.icon
+                          className={classNames(
+                            false
+                              ? 'text-gray-100'
+                              : 'text-gray-400 group-hover:text-gray-100',
+                            'mr-3 flex-shrink-0 h-6 w-6'
+                          )}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </span>
+                    </Link>
+                  </>
                 ))}
               </nav>
             </div>
@@ -194,49 +184,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-0 flex-1 overflow-hidden">
-        <div className="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">
-          <button
-            type="button"
-            className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <span className="sr-only">Open sidebar</span>
-            <MenuIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <main className="flex-1 relative z-0 bg-cordGray-darkest overflow-y-auto focus:outline-none">
-          <div className="py-5">
-            <div className="mx-6 pb-2 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
-              <h1 className="text-2xl font-thin text-gray-100 pb-3">Home</h1>
-              <div className="flex-shrink-0">
-                <button
-                  type="button"
-                  className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cordPurple hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Add New
-                </button>
-              </div>
-            </div>
-            <div className="mx-auto px-4 sm:px-6 md:px-8">
-              {/* Replace with your content */}
-              <div className="py-4">
-                <div className="rounded-3xl h-96 bg-cordPurple py-5">
-                  <div className="-mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
-                    <div className="overflow-hidden">
-                      <h3 className="ml-4 text-lg leading-6 font-light text-white">
-                        New Interviews
-                      </h3>
-                      <NewInterviews />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* /End replace */}
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
+    </>
   );
 }
