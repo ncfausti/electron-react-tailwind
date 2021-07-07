@@ -15,12 +15,6 @@ export const navigation = [
 
 export const routes = [
   {
-    path: '/',
-    exact: true,
-    sidebar: () => <div className="text-white">Home</div>,
-    main: () => <Home />,
-  },
-  {
     path: '/interviews',
     exact: false,
     sidebar: () => <div className="text-white">Interviews</div>,
@@ -31,5 +25,11 @@ export const routes = [
     exact: false,
     sidebar: () => <div className="text-white">Contacts</div>,
     main: () => <h1 className="text-white"> Contacts</h1>,
+  },
+  {
+    path: '/',
+    exact: true,
+    sidebar: () => <div className="text-white">Home</div>,
+    main: () => <Home />,
   },
 ];

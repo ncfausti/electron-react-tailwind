@@ -24,7 +24,8 @@ export default function Main() {
           <div className="py-5">
             <div className="mx-6 pb-2 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
               <h1 className="text-2xl font-thin text-gray-100 pb-3 capitalize">
-                {location.pathname === '/'
+                {/* on initial load, location.pathname shows the full file url (*.html) */}
+                {location.pathname === '/' || location.pathname.endsWith('html')
                   ? 'Home'
                   : location.pathname.slice(1)}
               </h1>
@@ -40,7 +41,7 @@ export default function Main() {
             <div className="mx-auto px-4 sm:px-6 md:px-8">
               {/* Replace with your content */}
               <Switch>
-                {routes.map((route, index) => (
+                {routes.map((route) => (
                   // Render more <Route>s with the same paths as
                   // above, but different components this time.}
                   <Route key={route.path} path={route.path} exact={route.exact}>
