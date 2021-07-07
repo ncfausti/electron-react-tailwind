@@ -76,7 +76,7 @@ const positions = [
 
 export default function NewInterviews() {
   return (
-    <div className="mt-4 bg-cordGray-darker shadow overflow-hidden">
+    <div className="mt-4 bg-cordGray-darker shadow">
       <ul className="divide-y divide-gray-200">
         {positions.map((position) => (
           <li key={position.id}>
@@ -90,7 +90,7 @@ export default function NewInterviews() {
                       date
                     )}`}</span>
                     <br />
-                    <span className="line-clamp-2 font-thin text-sm">
+                    <span className="overflow-x-hidden line-clamp-2 font-thin text-sm">
                       {position.description}
                     </span>
                   </p>
