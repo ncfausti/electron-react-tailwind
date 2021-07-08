@@ -8,7 +8,7 @@ export default function Main() {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="flex-auto">
       <div className="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">
         <button
           type="button"

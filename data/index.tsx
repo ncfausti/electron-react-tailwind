@@ -2,6 +2,8 @@
 import React from 'react';
 import { HomeIcon, UsersIcon, AnnotationIcon } from '@heroicons/react/outline';
 import Home from '../src/components/Home';
+import Interviews from '../src/components/Interviews';
+import Contacts from '../src/components/Contacts';
 
 export const navigation = [
   { name: 'Home', path: '/', icon: HomeIcon },
@@ -18,13 +20,13 @@ export const routes = [
     path: '/interviews',
     exact: false,
     sidebar: () => <div className="text-white">Interviews</div>,
-    main: () => <h1 className="text-white"> interviewssss</h1>,
+    main: () => <Interviews />,
   },
   {
     path: '/contacts',
     exact: false,
     sidebar: () => <div className="text-white">Contacts</div>,
-    main: () => <h1 className="text-white"> Contacts</h1>,
+    main: () => <Contacts />,
   },
   {
     path: '/',
