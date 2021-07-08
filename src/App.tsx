@@ -8,7 +8,7 @@ import Main from './components/Main';
 export default function App() {
   return (
     <Router>
-      <div className="h-screen flex overflow-hidden bg-cordBlack">
+      <div className="h-screen tracking-wide flex overflow-hidden bg-cordBlack">
         <Sidebar />
         <Main />
       </div>

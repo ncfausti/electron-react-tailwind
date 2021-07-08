@@ -9,7 +9,7 @@ export default function Main() {
 
   return (
     <>
-      <div className="flex flex-col w-0 flex-1 overflow-hidden">
+      <div className="flex flex-col w-0 flex-1">
         <div className="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">
           <button
             type="button"
@@ -20,7 +20,7 @@ export default function Main() {
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <main className="py-5 flex-1 relative z-0 bg-cordGray-darkest focus:outline-none">
+        <main className="py-5 flex flex-col flex-auto relative z-0 bg-cordGray-darkest focus:outline-none">
           <div className="mx-6 pb-2 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
             <h1 className="text-2xl font-thin text-gray-100 pb-3 capitalize">
               {/* on initial load, location.pathname shows the full file url (*.html) */}
@@ -37,19 +37,17 @@ export default function Main() {
               </button>
             </div>
           </div>
-          <div className="rounded-3xl bg-cordPurple m-4">
-            {/* Replace with your content */}
-            <Switch>
-              {routes.map((route) => (
-                // Render more <Route>s with the same paths as
-                // above, but different components this time.}
-                <Route key={route.path} path={route.path} exact={route.exact}>
-                  <route.main />
-                </Route>
-              ))}
-            </Switch>
-            {/* /End replace */}
-          </div>
+          {/* Replace with your content */}
+          <Switch>
+            {routes.map((route) => (
+              // Render more <Route>s with the same paths as
+              // above, but different components this time.}
+              <Route key={route.path} path={route.path} exact={route.exact}>
+                <route.main />
+              </Route>
+            ))}
+          </Switch>
+          {/* /End replace */}
         </main>
       </div>
     </>
