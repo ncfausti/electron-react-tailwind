@@ -126,7 +126,7 @@ export default function Sidebar() {
                           className={classNames(
                             false
                               ? 'text-gray-100'
-                              : 'text-gray-400 group-hover:text-gray-100',
+                              : 'text-white group-hover:text-white',
                             'flex-shrink-0 h-6 w-6'
                           )}
                           aria-hidden="true"
