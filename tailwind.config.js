@@ -14,6 +14,7 @@ module.exports = {
         cordGray: {
           darkest: 'rgb(5,5,5)',
           darker: 'rgb(20,20,20)',
+          'dark-medium': 'rgb(30,30,30)',
           dark: 'rgb(75,75,75)',
           DEFAULT: '#B7B7B7',
           light: '#e0e6ed',
