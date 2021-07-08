@@ -64,7 +64,7 @@ export default function Sidebar() {
                 </div>
               </Transition.Child>
               <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
-                <div className="flex-shrink-0 flex items-center px-4">
+                <div className="flex-shrink-0 flex items-center">
                   <img className="h-8 w-auto" src={icon} alt="Workflow" />
                 </div>
                 <nav className="mt-5 px-2 bg-cordGray-darker space-y-1">
@@ -105,12 +105,12 @@ export default function Sidebar() {
         <div className="flex flex-col w-64">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-col h-0 flex-1 bg-cordGray-darker">
-            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <div className="flex items-center text-gray-100 flex-shrink-0 px-4">
-                <img className="h-8 w-auto px-2" src={icon} alt="Cord" />
-                <span className="text-2xl font-semibold">Cord</span>
+            <div className="flex-1 flex flex-col p-4 py-6 overflow-y-auto">
+              <div className="flex items-center text-gray-100 flex-shrink-0">
+                <img className="h-8 w-auto" src={icon} alt="Cord" />
+                <span className="ml-3 text-2xl font-normal">Cord</span>
               </div>
-              <nav className="mt-5 flex-1 px-2 bg-cordGray-darker space-y-1">
+              <nav className="mt-5 flex-1 bg-cordGray-darker space-y-1">
                 {navigation.map((item) => (
                   <>
                     <Link key={item.name} to={item.path}>
@@ -118,8 +118,8 @@ export default function Sidebar() {
                         className={classNames(
                           false
                             ? 'bg-cordGray text-white'
-                            : 'text-gray-100 hover:bg-cordGray hover:text-white',
-                          'group flex items-center px-2 py-2 text-sm font-thin rounded-md'
+                            : 'text-white hover:bg-cordGray-dark hover:text-white',
+                          'group flex items-center px-2 py-2 my-2 text-md font-extralight rounded-3xl'
                         )}
                       >
                         <item.icon
@@ -127,11 +127,11 @@ export default function Sidebar() {
                             false
                               ? 'text-gray-100'
                               : 'text-gray-400 group-hover:text-gray-100',
-                            'mr-3 flex-shrink-0 h-6 w-6'
+                            'flex-shrink-0 h-6 w-6'
                           )}
                           aria-hidden="true"
                         />
-                        {item.name}
+                        <span className="ml-4">{item.name}</span>
                       </span>
                     </Link>
                   </>

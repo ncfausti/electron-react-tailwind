@@ -20,8 +20,8 @@ export default function Main() {
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <main className="py-5 flex flex-col flex-auto relative z-0 bg-cordGray-darkest focus:outline-none">
-          <div className="mx-6 pb-2 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
+        <main className="p-6 flex flex-col flex-auto relative z-0 bg-cordGray-darkest focus:outline-none">
+          <div className="pb-4 flex items-center justify-between flex-wrap sm:flex-nowrap border-b border-cordGray-dark">
             <h1 className="text-2xl font-thin text-gray-100 pb-3 capitalize">
               {/* on initial load, location.pathname shows the full file url (*.html) */}
               {location.pathname === '/' || location.pathname.endsWith('html')
