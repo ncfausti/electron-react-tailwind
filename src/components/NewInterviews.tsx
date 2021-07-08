@@ -82,11 +82,11 @@ const positions = [
 
 export default function NewInterviews() {
   return (
-    <div className="mt-6 bg-cordGray-darker shadow">
-      <ul className="divide-y divide-none">
+    <div className="overflow-scroll rounded-b-4xl bg-cordGray-darker shadow">
+      <ul className="max-h-96 divide-y divide-none">
         {positions.map((position) => (
           <li className="hover:bg-cordGray-dark-medium" key={position.id}>
-            <a href="/" className="border-b mx-6 p-6 h-56 block">
+            <a href="/" className="border-b mx-6 py-6 h-56 block">
               <div className="h-48 grid grid-rows-5 grid-flow-col gap-1 font-sm text-white">
                 <div className="text-lg">{position.title}</div>
                 <div className="-mt-3 font-extralight text-base">
