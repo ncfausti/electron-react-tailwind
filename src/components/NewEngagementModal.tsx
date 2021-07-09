@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState } from 'react';
 
 import { Dialog, Transition } from '@headlessui/react';
 import { UploadIcon } from '@heroicons/react/outline';
-import { openZip } from '../utils';
+import { extractZip, USER_DATA_DIR } from '../utils';
 
 export default function NewEngagementModal() {
   const [open, setOpen] = useState(false);
@@ -15,14 +15,21 @@ export default function NewEngagementModal() {
     console.log(e.target.files);
     setFileName(e.target.files[0].name);
     setFilePath(e.target.files[0].path);
-    openZip(filepath);
+    extractZip(e.target.files[0].path);
   }
+
+  function openModal() {
+    setOpen(true);
+    setFilePath('');
+    setFileName('');
+  }
+
   return (
     <>
       <button
         className="relative inline-flex items-center px-8 py-2 border border-transparent shadow-sm text-base font-light rounded-md text-white bg-cordPurple hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => openModal()}
       >
         Add New
       </button>
@@ -65,7 +72,7 @@ export default function NewEngagementModal() {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-                <div>
+                <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
                     <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <div className="flex text-sm text-gray-600">
@@ -95,7 +102,7 @@ export default function NewEngagementModal() {
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
                     onClick={() => setOpen(false)}
                   >
-                    Deactivate
+                    Continue
                   </button>
                   <button
                     type="button"

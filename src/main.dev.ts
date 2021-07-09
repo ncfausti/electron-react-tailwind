@@ -74,6 +74,11 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,
+      additionalArguments: [
+        `--USER-DATA-DIR=${app.getPath('userData')}`,
+        `--USER-APP-DIR=${app.getPath('appData')}`,
+        `--USER-HOME-DIR=${app.getPath('home')}`,
+      ],
     },
   });
 
