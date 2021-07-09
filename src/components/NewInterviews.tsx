@@ -1,18 +1,6 @@
 import React from 'react';
-import {
-  LocationMarkerIcon,
-  DotsHorizontalIcon,
-  UsersIcon,
-  AnnotationIcon,
-} from '@heroicons/react/solid';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useParams,
-  useRouteMatch,
-} from 'react-router-dom';
+import { LocationMarkerIcon, DotsHorizontalIcon } from '@heroicons/react/solid';
+import { Link } from 'react-router-dom';
 import { fmtTime } from '../utils/index';
 
 const lipsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -30,66 +18,64 @@ const [month, day, year] = [
   date.getFullYear(),
 ];
 
-const positions = [
-  {
-    id: 1,
-    title: 'Interview Name',
-    type: 'Full-time',
-    location: 'Remote',
-    description: lipsum,
-    department: 'Participant 1',
-    closeDate: '2020-01-07',
-    closeDateFull: 'January 7, 2020',
-    commentCount: '4',
-  },
-  {
-    id: 2,
-    title: 'Interview Name',
-    type: 'Full-time',
-    location: 'Remote',
-    description: lipsum,
-    department: 'Participant 2',
-    closeDate: '2020-01-07',
-    closeDateFull: 'January 7, 2020',
-    commentCount: '4',
-  },
-  {
-    id: 3,
-    title: 'Interview Name',
-    type: 'Full-time',
-    location: 'Remote',
-    description: lipsum,
-    department: 'Participant 1, Participant 2',
-    closeDate: '2020-01-14',
-    closeDateFull: 'January 14, 2020',
-    commentCount: '4',
-  },
-  {
-    id: 4,
-    title: 'Interview Name',
-    type: 'Full-time',
-    location: 'Remote',
-    description: lipsum,
-    department: 'Participant 2, Participant 3',
-    closeDate: '2020-01-14',
-    closeDateFull: 'January 14, 2020',
-    commentCount: '4',
-  },
-  {
-    id: 5,
-    title: 'Interview Name',
-    type: 'Full-time',
-    location: 'Remote',
-    description: lipsum,
-    department: 'Participant 7',
-    closeDate: '2020-01-14',
-    closeDateFull: 'January 14, 2020',
-    commentCount: '4',
-  },
-];
-
 export default function NewInterviews() {
-  const { path, url } = useRouteMatch();
+  const positions = [
+    {
+      id: 1,
+      title: 'Interview Name',
+      type: 'Full-time',
+      location: 'Remote',
+      description: lipsum,
+      department: 'Participant 1',
+      closeDate: '2020-01-07',
+      closeDateFull: 'January 7, 2020',
+      commentCount: '4',
+    },
+    {
+      id: 2,
+      title: 'Interview Name',
+      type: 'Full-time',
+      location: 'Remote',
+      description: lipsum,
+      department: 'Participant 2',
+      closeDate: '2020-01-07',
+      closeDateFull: 'January 7, 2020',
+      commentCount: '4',
+    },
+    {
+      id: 3,
+      title: 'Interview Name',
+      type: 'Full-time',
+      location: 'Remote',
+      description: lipsum,
+      department: 'Participant 1, Participant 2',
+      closeDate: '2020-01-14',
+      closeDateFull: 'January 14, 2020',
+      commentCount: '4',
+    },
+    {
+      id: 4,
+      title: 'Interview Name',
+      type: 'Full-time',
+      location: 'Remote',
+      description: lipsum,
+      department: 'Participant 2, Participant 3',
+      closeDate: '2020-01-14',
+      closeDateFull: 'January 14, 2020',
+      commentCount: '4',
+    },
+    {
+      id: 5,
+      title: 'Interview Name',
+      type: 'Full-time',
+      location: 'Remote',
+      description: lipsum,
+      department: 'Participant 7',
+      closeDate: '2020-01-14',
+      closeDateFull: 'January 14, 2020',
+      commentCount: '4',
+    },
+  ];
   return (
     <div className="h-5/6 overflow-scroll rounded-b-4xl bg-cordGray-darker shadow">
       <ul className="overflow-scroll divide-y divide-none">
