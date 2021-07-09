@@ -6,76 +6,76 @@ export default function DataTable(props) {
   const data = React.useMemo(
     () => [
       {
-        col1: 'Hello',
-        col2: 'World',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'react-table',
-        col2: 'rocks',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'whatever',
-        col2: 'you want',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'Hello',
-        col2: 'World',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'react-table',
-        col2: 'rocks',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'whatever',
-        col2: 'you want',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'Hello',
-        col2: 'World',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'react-table',
-        col2: 'rocks',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'whatever',
-        col2: 'you want',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'Hello',
-        col2: 'World',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'react-table',
-        col2: 'rocks',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
       {
-        col1: 'whatever',
-        col2: 'you want',
-      },
-      {
-        col1: 'Hello',
-        col2: 'World',
-      },
-      {
-        col1: 'react-table',
-        col2: 'rocks',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-      },
-      {
-        col1: 'Hello',
-        col2: 'World',
-      },
-      {
-        col1: 'react-table',
-        col2: 'rocks',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
+        col1: 'Jane Doe',
+        col2: 'California',
+        col3: '4QFJ 12345 67890',
+        col4: 'Participant 1',
       },
     ],
     []
@@ -84,12 +84,20 @@ export default function DataTable(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Column 1',
+        Header: 'Name',
         accessor: 'col1', // accessor is the "key" in the data
       },
       {
-        Header: 'Column 2',
+        Header: 'Location',
         accessor: 'col2',
+      },
+      {
+        Header: 'MGRS',
+        accessor: 'col3', // accessor is the "key" in the data
+      },
+      {
+        Header: 'Participants',
+        accessor: 'col4',
       },
     ],
     []
@@ -115,7 +123,7 @@ export default function DataTable(props) {
         className="min-w-full divide-y divide-gray-200"
         {...getTableProps()}
       >
-        <thead className="bg-gray-50">
+        <thead className="bg-gray-50 text-left">
           {
             // Loop over the header rows
             headerGroups.map((headerGroup) => (
@@ -125,11 +133,11 @@ export default function DataTable(props) {
                   // Loop over the headers in each row
                   headerGroup.headers.map((column) => (
                     // Apply the header cell props
-                    <th {...column.getHeaderProps()}>
-                      {
-                        // Render the header
-                        column.render('Header')
-                      }
+                    <th
+                      className="font-normal text-xs p-4"
+                      {...column.getHeaderProps()}
+                    >
+                      {column.render('Header')}
                     </th>
                   ))
                 }
@@ -156,7 +164,7 @@ export default function DataTable(props) {
                       // Apply the cell props
                       return (
                         <td
-                          className="px-6 py-4 whitespace-nowrap"
+                          className="p-4 whitespace-nowrap text-white text-sm"
                           {...cell.getCellProps()}
                         >
                           {
