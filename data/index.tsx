@@ -3,7 +3,9 @@ import React from 'react';
 import { HomeIcon, UsersIcon, AnnotationIcon } from '@heroicons/react/outline';
 import Home from '../src/components/Home';
 import Interviews from '../src/components/Interviews';
+import EngagementDetails from '../src/components/EngagementDetails';
 import Contacts from '../src/components/Contacts';
+import ContactDetails from '../src/components/ContactDetails';
 
 export const navigation = [
   { name: 'Home', path: '/', icon: HomeIcon },
@@ -17,10 +19,22 @@ export const navigation = [
 
 export const routes = [
   {
+    path: '/interviews/:uid',
+    exact: false,
+    sidebar: () => <div className="text-white">Interviews</div>,
+    main: () => <EngagementDetails />,
+  },
+  {
     path: '/interviews',
     exact: false,
     sidebar: () => <div className="text-white">Interviews</div>,
     main: () => <Interviews />,
+  },
+  {
+    path: '/contacts/:uid',
+    exact: false,
+    sidebar: () => <div className="text-white">Contacts</div>,
+    main: () => <ContactDetails />,
   },
   {
     path: '/contacts',

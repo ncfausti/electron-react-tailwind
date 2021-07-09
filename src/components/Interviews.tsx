@@ -24,11 +24,7 @@ export default function Interviews() {
   return (
     <div className="h-5/6 rounded-4xl mt-4">
       <StickyHeader bgColor="bg-cordPurple" title="Engagements" />
-      <DataTable
-        // columnNames={['Name', 'Location', 'MGRS', 'Participants']}
-        // data={interviewPeople}
-        bgColor="bg-cordGray-dark-medium"
-      />
+      <DataTable bgColor="bg-cordGray-dark-medium" />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useTable } from 'react-table';
-import ITableInfo from '../interfaces/ITableInfo';
 
 export default function DataTable(props) {
   const data = React.useMemo(
@@ -112,12 +112,13 @@ export default function DataTable(props) {
     prepareRow,
   } = tableInstance;
 
+  const history = useHistory();
+  const handleRowClick = (row) => {
+    console.log('cliked row');
+    history.push(`/contacts/1`);
+  };
+
   return (
-    // apply the table props
-    // <div className="flex flex-col">
-    //   <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    //     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-    //       <div className="shadow overflow-hidden border-b border-gray-200">
     <div className="h-5/6 overflow-scroll rounded-b-4xl">
       <table
         className="min-w-full divide-y divide-gray-200"
@@ -147,7 +148,7 @@ export default function DataTable(props) {
         </thead>
         {/* Apply the table body props */}
         <tbody
-          className={`${props.bgColor} divide-y divide-gray-200`}
+          className="bg-cordGray-darker divide-y divide-gray-200"
           {...getTableBodyProps()}
         >
           {
@@ -157,7 +158,11 @@ export default function DataTable(props) {
               prepareRow(row);
               return (
                 // Apply the row props
-                <tr {...row.getRowProps()}>
+                <tr
+                  onClick={() => handleRowClick(row)}
+                  className="hover:bg-cordGray-dark-medium cursor-pointer"
+                  {...row.getRowProps()}
+                >
                   {
                     // Loop over the rows cells
                     row.cells.map((cell) => {
@@ -182,9 +187,5 @@ export default function DataTable(props) {
         </tbody>
       </table>
     </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
