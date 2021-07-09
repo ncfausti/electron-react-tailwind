@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { MenuIcon } from '@heroicons/react/outline';
 import { routes } from '../../data';
+import NewEngagementModal from './NewEngagementModal';
 
 export default function Main() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,12 +34,7 @@ export default function Main() {
               className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-4xl pl-4 pr-3 py-2 m-3 text-white bg-cordGray-dark placeholder-white font-extralight text-white"
               placeholder="Search"
             />
-            <button
-              type="button"
-              className="relative inline-flex items-center px-8 py-2 border border-transparent shadow-sm text-base font-light rounded-md text-white bg-cordPurple hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Add New
-            </button>
+            <NewEngagementModal />
           </div>
         </div>
         {/* Replace with your content */}

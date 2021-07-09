@@ -12,7 +12,9 @@ export default function EngagementDetails() {
   const { uid } = useParams();
   return (
     <div className="h-5/6 rounded-4xl mt-4 text-white">
-      Engagement ID: {uid} DETAILS PAGE
+      Engagement ID: {uid}
+      <br />
+      DETAILS PAGE
     </div>
   );
 }

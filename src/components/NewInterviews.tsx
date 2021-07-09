@@ -13,7 +13,7 @@ import {
   useParams,
   useRouteMatch,
 } from 'react-router-dom';
-import fmtTime from '../utils/index';
+import { fmtTime } from '../utils/index';
 
 const lipsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
   eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
