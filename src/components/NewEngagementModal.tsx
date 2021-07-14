@@ -1,29 +1,40 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Fragment, useRef, useState } from 'react';
 import log from 'electron-log';
 import { Dialog, Transition } from '@headlessui/react';
 import { UploadIcon } from '@heroicons/react/outline';
 import path from 'path';
 import fs from 'fs';
-import { extractZip, userDataDir } from '../utils';
+import { extractZip, userDataDir, getAllFiles } from '../utils';
 
 export default function NewEngagementModal() {
   const [open, setOpen] = useState(false);
   const [filepath, setFilePath] = useState('');
   const [filename, setFileName] = useState('');
+  const [engagementName, setEngagementName] = useState('');
+  const [engagementLocation, setEngagementLocation] = useState('');
+  const [engagementDescription, setEngagementDescription] = useState('');
+  const [contactName, setContactName] = useState('');
   const [importLocation, setImportLocation] = useState('./extract');
+  const [importPhotos, setImportPhotos] = useState([]);
   const [importStep, setImportStep] = useState(1);
 
   const cancelButtonRef = useRef(null);
 
   async function handleFiles(e) {
     log.info(e.target.files);
-    setFileName(e.target.files[0].name);
+    const fname = e.target.files[0].name;
+    setFileName(fname);
     setFilePath(e.target.files[0].path);
     const loc = await extractZip(
       e.target.files[0].path,
       `${userDataDir()}/extract`
     );
-    setImportLocation(loc || '');
+    setImportLocation(`${loc}/${fname.slice(0, -4)}` || '');
+    const photofiles = getAllFiles(`${loc}/test/people/`, []);
+    log.info(photofiles);
+    setImportPhotos(photofiles);
   }
 
   function openModal() {
@@ -43,6 +54,10 @@ export default function NewEngagementModal() {
       }
     }
     setOpen(false);
+    setEngagementName('');
+    setEngagementDescription('');
+    setEngagementLocation('');
+    setContactName('');
     setTimeout(() => setImportStep(1), 500);
   }
 
@@ -53,6 +68,16 @@ export default function NewEngagementModal() {
   function continueClick(stepN: number) {
     if (stepN === 1) {
       setImportStep(2);
+    }
+    if (stepN === 2) {
+      log.info(engagementName);
+      log.info(engagementLocation);
+      log.info(engagementDescription);
+      setImportStep(3);
+    }
+    if (stepN === 3) {
+      log.info(contactName);
+      setImportStep(4);
     }
   }
 
@@ -147,7 +172,65 @@ export default function NewEngagementModal() {
               )) ||
                 (importStep === 2 && (
                   <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-                    video preview interview name, location, tags, description
+                    <video width="320" height="240" controls>
+                      <source
+                        src={`${importLocation}/conversation.mp4`}
+                        type="video/mp4"
+                      />
+                    </video>
+                    <label
+                      htmlFor="engagement-name"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Engagement Name
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        name="engagement-name"
+                        id="engagement-name"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder=""
+                        value={engagementName}
+                        onInput={(e) => setEngagementName(e.target.value)}
+                      />
+                    </div>
+                    <label
+                      htmlFor="engagement-location"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Location
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        name="engagement-location"
+                        id="engagement-location"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder=""
+                        value={engagementLocation}
+                        onInput={(e) => setEngagementLocation(e.target.value)}
+                      />
+                    </div>
+                    <label
+                      htmlFor="engagement-description"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Description
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        name="engagement-description"
+                        id="engagement-description"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder=""
+                        value={engagementDescription}
+                        onInput={(e) =>
+                          setEngagementDescription(e.target.value)
+                        }
+                      />
+                    </div>
                     <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                       <button
                         type="button"
@@ -160,6 +243,81 @@ export default function NewEngagementModal() {
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
                         onClick={() => backClick(2)}
+                        ref={cancelButtonRef}
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </div>
+                )) ||
+                (importStep === 3 && (
+                  <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                    {importPhotos.map((imgFilePath, i) => {
+                      return (
+                        <>
+                          <img src={`${imgFilePath}`} alt={`${imgFilePath}`} />
+                          <label
+                            htmlFor={`contact-name-${i}`}
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Contact Name:
+                          </label>
+                          <div className="mt-1">
+                            <input
+                              type="text"
+                              name={`contact-name-${i}`}
+                              id={`contact-name-${i}`}
+                              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                              placeholder=""
+                              value={contactName}
+                              onInput={(e) => setContactName(e.target.value)}
+                            />
+                          </div>
+                        </>
+                      );
+                    })}
+
+                    <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                      <button
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+                        onClick={() => continueClick(3)}
+                      >
+                        Continue
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                        onClick={() => backClick(3)}
+                        ref={cancelButtonRef}
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </div>
+                )) ||
+                (importStep === 4 && (
+                  <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                    {importPhotos.map((imgFilePath, i) => {
+                      return (
+                        <>
+                          <div className="mt-1">Finalize details page</div>
+                        </>
+                      );
+                    })}
+
+                    <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                      <button
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+                        onClick={() => continueClick(3)}
+                      >
+                        Finish
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                        onClick={() => backClick(3)}
                         ref={cancelButtonRef}
                       >
                         Back
