@@ -3,26 +3,48 @@ import log from 'electron-log';
 import { Dialog, Transition } from '@headlessui/react';
 import { UploadIcon } from '@heroicons/react/outline';
 import path from 'path';
+import fs from 'fs';
 import { extractZip, userDataDir } from '../utils';
 
 export default function NewEngagementModal() {
   const [open, setOpen] = useState(false);
   const [filepath, setFilePath] = useState('');
   const [filename, setFileName] = useState('');
+  const [importLocation, setImportLocation] = useState('./extract');
+  const [importStep, setImportStep] = useState(1);
 
   const cancelButtonRef = useRef(null);
 
-  function handleFiles(e) {
+  async function handleFiles(e) {
     log.info(e.target.files);
     setFileName(e.target.files[0].name);
     setFilePath(e.target.files[0].path);
-    extractZip(e.target.files[0].path, `${userDataDir()}/extract`);
+    const loc = await extractZip(
+      e.target.files[0].path,
+      `${userDataDir()}/extract`
+    );
+    setImportLocation(loc);
   }
 
   function openModal() {
     setOpen(true);
     setFilePath('');
     setFileName('');
+  }
+
+  function cancelClick() {
+    // cleanup: delete extraction directory recursively
+    try {
+      fs.rmdirSync(importLocation, { recursive: true });
+      log.info(`${importLocation} is deleted!`);
+    } catch (err) {
+      log.error(`Error while deleting ${importLocation}.`);
+    }
+    setOpen(false);
+  }
+
+  function continueClick() {
+    setImportStep(2);
   }
 
   return (
@@ -90,25 +112,22 @@ export default function NewEngagementModal() {
                           onChange={(e) => handleFiles(e)}
                         />
                       </label>
-                      <p className="pl-1">or drag and drop</p>
-                      <p>{filename}</p>
-                      <p>{filepath}</p>
+                      <p className="pl-1">{filename || 'or drag and drop'}</p>
                     </div>
-                    <p className="text-xs text-gray-500">ZIP or SMT</p>
                   </div>
                 </div>
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    onClick={() => continueClick()}
                   >
                     Continue
                   </button>
                   <button
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    onClick={() => cancelClick()}
                     ref={cancelButtonRef}
                   >
                     Cancel

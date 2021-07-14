@@ -27,7 +27,6 @@ describe('unzip compressed conversation file', () => {
     // cleanup: delete extraction directory recursively
     try {
       fs.rmdirSync(outfolder, { recursive: true });
-
       log.info(`${loc} is deleted!`);
     } catch (err) {
       log.error(`Error while deleting ${loc}.`);
