@@ -14,7 +14,12 @@ import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Store from 'electron-store';
 import MenuBuilder from './menu';
+
+// Init electron-store in main so
+// it can be used in renderer as well
+Store.initRenderer();
 
 export default class AppUpdater {
   constructor() {

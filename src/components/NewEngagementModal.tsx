@@ -6,6 +6,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { UploadIcon } from '@heroicons/react/outline';
 import path from 'path';
 import fs from 'fs';
+import Store from 'electron-store';
 import { extractZip, userDataDir, getAllFiles } from '../utils';
 
 export default function NewEngagementModal() {
@@ -22,6 +23,8 @@ export default function NewEngagementModal() {
   const [importStep, setImportStep] = useState(1);
 
   const cancelButtonRef = useRef(null);
+
+  const store = new Store();
 
   function clearState() {
     setEngagementName('');
@@ -55,7 +58,9 @@ export default function NewEngagementModal() {
       path.join(loc, fileNameSansZip, 'conversation.json')
     );
     const conversation = JSON.parse(rawdata);
-    console.log(conversation);
+    store.set(fileNameSansZip, conversation);
+    log.info(store.get(fileNameSansZip));
+    log.info(store.get(`${fileNameSansZip}.reactions.person_id_0`));
   }
 
   function openModal() {
