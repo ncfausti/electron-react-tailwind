@@ -15,6 +15,7 @@ export default function NewEngagementModal() {
   const [engagementName, setEngagementName] = useState('');
   const [engagementLocation, setEngagementLocation] = useState('');
   const [engagementDescription, setEngagementDescription] = useState('');
+  const [engagementTags, setEngagementTags] = useState([]);
   const [contactName, setContactName] = useState('');
   const [importLocation, setImportLocation] = useState('./extract');
   const [importPhotos, setImportPhotos] = useState([]);
@@ -22,19 +23,39 @@ export default function NewEngagementModal() {
 
   const cancelButtonRef = useRef(null);
 
+  function clearState() {
+    setEngagementName('');
+    setEngagementDescription('');
+    setEngagementLocation('');
+    setContactName('');
+    setEngagementTags([]);
+  }
+
   async function handleFiles(e) {
     log.info(e.target.files);
+
     const fname = e.target.files[0].name;
     setFileName(fname);
     setFilePath(e.target.files[0].path);
+
     const loc = await extractZip(
       e.target.files[0].path,
       `${userDataDir()}/extract`
     );
-    setImportLocation(`${loc}/${fname.slice(0, -4)}` || '');
-    const photofiles = getAllFiles(`${loc}/test/people/`, []);
+
+    const fileNameSansZip = fname.slice(0, -4);
+    setImportLocation(`${loc}/${fileNameSansZip}` || '');
+
+    const photofiles = getAllFiles(`${loc}/${fileNameSansZip}/people/`, []);
     log.info(photofiles);
+
     setImportPhotos(photofiles);
+
+    const rawdata = fs.readFileSync(
+      path.join(loc, fileNameSansZip, 'conversation.json')
+    );
+    const conversation = JSON.parse(rawdata);
+    console.log(conversation);
   }
 
   function openModal() {
@@ -54,10 +75,7 @@ export default function NewEngagementModal() {
       }
     }
     setOpen(false);
-    setEngagementName('');
-    setEngagementDescription('');
-    setEngagementLocation('');
-    setContactName('');
+    clearState();
     setTimeout(() => setImportStep(1), 500);
   }
 
@@ -79,6 +97,12 @@ export default function NewEngagementModal() {
       log.info(contactName);
       setImportStep(4);
     }
+  }
+
+  function finish() {
+    setOpen(false);
+    clearState();
+    setTimeout(() => setImportStep(1), 500);
   }
 
   return (
@@ -182,7 +206,7 @@ export default function NewEngagementModal() {
                       htmlFor="engagement-name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Engagement Name
+                      Engagement Name:
                     </label>
                     <div className="mt-1">
                       <input
@@ -199,7 +223,7 @@ export default function NewEngagementModal() {
                       htmlFor="engagement-location"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Location
+                      Location:
                     </label>
                     <div className="mt-1">
                       <input
@@ -213,10 +237,27 @@ export default function NewEngagementModal() {
                       />
                     </div>
                     <label
+                      htmlFor="engagement-tags"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Tags:
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        name="engagement-tags"
+                        id="engagement-tags"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder=""
+                        value={engagementTags}
+                        onInput={(e) => setEngagementTags(e.target.value)}
+                      />
+                    </div>
+                    <label
                       htmlFor="engagement-description"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Description
+                      Description:
                     </label>
                     <div className="mt-1">
                       <input
@@ -310,9 +351,10 @@ export default function NewEngagementModal() {
                       <button
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                        onClick={() => continueClick(3)}
+                        onClick={() => finish()}
                       >
                         Finish
+                        {/* clear out state hook values and transfer to /engagement:uid */}
                       </button>
                       <button
                         type="button"
