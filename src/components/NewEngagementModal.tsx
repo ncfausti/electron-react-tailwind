@@ -1,8 +1,9 @@
 import React, { Fragment, useRef, useState } from 'react';
-
+import log from 'electron-log';
 import { Dialog, Transition } from '@headlessui/react';
 import { UploadIcon } from '@heroicons/react/outline';
-import { extractZip, USER_DATA_DIR } from '../utils';
+import path from 'path';
+import { extractZip, userDataDir } from '../utils';
 
 export default function NewEngagementModal() {
   const [open, setOpen] = useState(false);
@@ -12,10 +13,10 @@ export default function NewEngagementModal() {
   const cancelButtonRef = useRef(null);
 
   function handleFiles(e) {
-    console.log(e.target.files);
+    log.info(e.target.files);
     setFileName(e.target.files[0].name);
     setFilePath(e.target.files[0].path);
-    extractZip(e.target.files[0].path);
+    extractZip(e.target.files[0].path, `${userDataDir()}/extract`);
   }
 
   function openModal() {

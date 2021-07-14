@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 import extract from 'extract-zip';
 import fs from 'fs';
-import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import log from 'electron-log';
 
 export function fmtTime(d: Date) {
   let hours = d.getHours();
@@ -14,21 +16,49 @@ export function fmtTime(d: Date) {
 
 // Get the OS specific appData folder from the additional
 // additionalArgs. values passed at startup in the Main process
-export const USER_DATA_DIR = window.process.argv
-  .filter((v) => v.startsWith('--USER-DATA-DIR'))[0]
-  .split('=')[1];
-
-export async function extractZip(filename: string) {
+export function userDataDir() {
   try {
-    const uid = uuidv4();
-    const dir = `${USER_DATA_DIR}/Engagement/${uid}`;
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    console.log(`extracting ${filename} to directory: ${dir}`);
-    await extract(filename, { dir });
-  } catch (err) {
-    console.log('Extraction failed');
-    console.log(err);
+    return window.process.argv
+      .filter((v) => v.startsWith('--USER-DATA-DIR'))[0]
+      .split('=')[1];
+  } catch (e) {
+    log.info('Info: --USER-DATA-DIR not specified on process.argv');
+    return null;
   }
 }
+
+/**
+ * Extract zip to local filesystem
+ * @param {string} filename - The name of the file to extract.
+ * @return {string} The location on disk where contents have been extracted.
+ */
+export async function extractZip(zipFilePath: string, toDir: string) {
+  try {
+    if (!fs.existsSync(toDir)) {
+      fs.mkdirSync(toDir, { recursive: true });
+    }
+
+    log.info(`Extracting ${zipFilePath} to directory: ${toDir}`);
+    await extract(zipFilePath, { dir: toDir });
+    return toDir;
+  } catch (err) {
+    log.error(`Extraction failed: ${err}`);
+    return null;
+  }
+}
+
+export const getAllFiles = (dirPath: string, arrayOfFiles: string[]) => {
+  const files = fs.readdirSync(dirPath);
+
+  arrayOfFiles = arrayOfFiles || [];
+
+  files.forEach((file) => {
+    if (fs.statSync(`${dirPath}/${file}`).isDirectory()) {
+      arrayOfFiles = getAllFiles(`${dirPath}/${file}`, arrayOfFiles);
+    } else {
+      arrayOfFiles.push(path.join(dirPath, '/', file));
+    }
+  });
+
+  return arrayOfFiles;
+};
