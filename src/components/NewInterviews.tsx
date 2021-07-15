@@ -1,6 +1,8 @@
 import React from 'react';
 import { LocationMarkerIcon, DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
+import Store from 'electron-store';
+import log from 'electron-log';
 import { fmtTime } from '../utils/index';
 
 const lipsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -76,12 +78,19 @@ export default function NewInterviews() {
       commentCount: '4',
     },
   ];
+  const store = new Store();
+
+  log.info(store.get(`example.reactions.person_id_0`));
+
   return (
     <div className="h-5/6 overflow-scroll rounded-b-4xl bg-cordGray-darker shadow">
       <ul className="overflow-scroll divide-y divide-none">
         {positions.map((position) => (
           <li className="hover:bg-cordGray-dark-medium" key={position.id}>
-            <Link to="/interviews/1" className="border-b mx-6 py-6 h-56 block">
+            <Link
+              to={`/interviews/${position.id}`}
+              className="border-b mx-6 py-6 h-56 block"
+            >
               <div className="h-48 grid grid-rows-5 grid-flow-col gap-1 font-sm text-white">
                 <div className="text-lg">{position.title}</div>
                 <div className="-mt-3 font-extralight text-base">

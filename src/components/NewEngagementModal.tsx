@@ -7,16 +7,19 @@ import { UploadIcon } from '@heroicons/react/outline';
 import path from 'path';
 import fs from 'fs';
 import Store from 'electron-store';
+import uuidV4 from 'uuid/v4';
 import { extractZip, userDataDir, getAllFiles } from '../utils';
 
 export default function NewEngagementModal() {
   const [open, setOpen] = useState(false);
   const [filepath, setFilePath] = useState('');
   const [filename, setFileName] = useState('');
+  const [engagementId, setEngagementId] = useState('');
   const [engagementName, setEngagementName] = useState('');
   const [engagementLocation, setEngagementLocation] = useState('');
   const [engagementDescription, setEngagementDescription] = useState('');
   const [engagementTags, setEngagementTags] = useState([]);
+  const [engagementObject, setEngagementObject] = useState({});
   const [contactName, setContactName] = useState('');
   const [importLocation, setImportLocation] = useState('./extract');
   const [importPhotos, setImportPhotos] = useState([]);
@@ -32,11 +35,10 @@ export default function NewEngagementModal() {
     setEngagementLocation('');
     setContactName('');
     setEngagementTags([]);
+    setEngagementObject({});
   }
 
   async function handleFiles(e) {
-    log.info(e.target.files);
-
     const fname = e.target.files[0].name;
     setFileName(fname);
     setFilePath(e.target.files[0].path);
@@ -58,6 +60,8 @@ export default function NewEngagementModal() {
       path.join(loc, fileNameSansZip, 'conversation.json')
     );
     const conversation = JSON.parse(rawdata);
+    log.info(`loc: ${conversation.Location}`);
+    setEngagementLocation(conversation.Location);
     store.set(fileNameSansZip, conversation);
     log.info(store.get(fileNameSansZip));
     log.info(store.get(`${fileNameSansZip}.reactions.person_id_0`));
@@ -106,7 +110,9 @@ export default function NewEngagementModal() {
 
   function finish() {
     setOpen(false);
+    // setEngagementObject({ participants });
     clearState();
+
     setTimeout(() => setImportStep(1), 500);
   }
 
