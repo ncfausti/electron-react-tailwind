@@ -1,8 +1,16 @@
 /* eslint-disable no-param-reassign */
+
+import { uuid } from 'uuidv4';
 import extract from 'extract-zip';
 import fs from 'fs';
 import path from 'path';
 import log from 'electron-log';
+import Store from 'electron-store';
+import IDataStore, {
+  Collection,
+  Contact,
+  IRecord,
+} from '../interfaces/IDataStore';
 
 export function fmtTime(d: Date) {
   let hours = d.getHours();
@@ -43,7 +51,7 @@ export async function extractZip(zipFilePath: string, toDir: string) {
     return toDir;
   } catch (err) {
     log.error(`Extraction failed: ${err}`);
-    return null;
+    return '';
   }
 }
 
@@ -61,4 +69,41 @@ export const getAllFiles = (dirPath: string, arrayOfFiles: string[]) => {
   });
 
   return arrayOfFiles;
+};
+
+export const DataStore = (): IDataStore => {
+  const store = new Store();
+
+  Object.values(Collection).forEach((collection) => {
+    if (store.get(collection) === undefined) {
+      store.set(collection, []);
+    }
+  });
+
+  return {
+    getAllContacts(): Contact[] {
+      return store.get('contact') as Contact[];
+    },
+    addContact(contact) {
+      const contacts: IRecord[] = store.get('contact') as IRecord[];
+      const uid = uuid();
+      contacts.push({
+        id: uid,
+        created: new Date(),
+        modified: null,
+        data: contact,
+      });
+      store.set('contact', contacts);
+      return uid;
+    },
+    getContactById(id): Contact {
+      // grab all results and filter by id
+      const contacts = store.get('contact') as IRecord[];
+      const results = contacts.filter((rec: IRecord) => rec.id === id);
+      if (results === undefined) {
+        throw Error('Contact does not exist with that id.');
+      }
+      return results[0].data as Contact;
+    },
+  };
 };

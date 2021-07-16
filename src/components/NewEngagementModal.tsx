@@ -7,22 +7,18 @@ import { UploadIcon } from '@heroicons/react/outline';
 import path from 'path';
 import fs from 'fs';
 import Store from 'electron-store';
-import uuidV4 from 'uuid/v4';
 import { extractZip, userDataDir, getAllFiles } from '../utils';
 
 export default function NewEngagementModal() {
   const [open, setOpen] = useState(false);
-  const [filepath, setFilePath] = useState('');
   const [filename, setFileName] = useState('');
-  const [engagementId, setEngagementId] = useState('');
   const [engagementName, setEngagementName] = useState('');
   const [engagementLocation, setEngagementLocation] = useState('');
   const [engagementDescription, setEngagementDescription] = useState('');
-  const [engagementTags, setEngagementTags] = useState([]);
-  const [engagementObject, setEngagementObject] = useState({});
+  const [engagementTags, setEngagementTags] = useState('');
   const [contactName, setContactName] = useState('');
   const [importLocation, setImportLocation] = useState('./extract');
-  const [importPhotos, setImportPhotos] = useState([]);
+  const [importPhotos, setImportPhotos] = useState<string[]>([]);
   const [importStep, setImportStep] = useState(1);
 
   const cancelButtonRef = useRef(null);
@@ -34,42 +30,44 @@ export default function NewEngagementModal() {
     setEngagementDescription('');
     setEngagementLocation('');
     setContactName('');
-    setEngagementTags([]);
-    setEngagementObject({});
+    setEngagementTags('');
   }
 
-  async function handleFiles(e) {
-    const fname = e.target.files[0].name;
-    setFileName(fname);
-    setFilePath(e.target.files[0].path);
+  async function handleFiles(target?: HTMLInputElement) {
+    if (target && target.files) {
+      const fname = target.files[0].name;
+      setFileName(fname);
 
-    const loc = await extractZip(
-      e.target.files[0].path,
-      `${userDataDir()}/extract`
-    );
+      const loc = await extractZip(
+        target.files[0].path,
+        `${userDataDir()}/extract`
+      );
 
-    const fileNameSansZip = fname.slice(0, -4);
-    setImportLocation(`${loc}/${fileNameSansZip}` || '');
+      const fileNameSansZip = fname.slice(0, -4);
+      setImportLocation(`${loc}/${fileNameSansZip}` || '');
 
-    const photofiles = getAllFiles(`${loc}/${fileNameSansZip}/people/`, []);
-    log.info(photofiles);
+      const photofiles: string[] = getAllFiles(
+        `${loc}/${fileNameSansZip}/people/`,
+        []
+      );
+      log.info(photofiles);
 
-    setImportPhotos(photofiles);
+      setImportPhotos(photofiles);
 
-    const rawdata = fs.readFileSync(
-      path.join(loc, fileNameSansZip, 'conversation.json')
-    );
-    const conversation = JSON.parse(rawdata);
-    log.info(`loc: ${conversation.Location}`);
-    setEngagementLocation(conversation.Location);
-    store.set(fileNameSansZip, conversation);
-    log.info(store.get(fileNameSansZip));
-    log.info(store.get(`${fileNameSansZip}.reactions.person_id_0`));
+      const rawdata = fs.readFileSync(
+        path.join(loc, fileNameSansZip, 'conversation.json')
+      );
+      const conversation = JSON.parse(rawdata.toString());
+      log.info(`loc: ${conversation.Location}`);
+      setEngagementLocation(conversation.Location);
+      store.set(fileNameSansZip, conversation);
+      log.info(store.get(fileNameSansZip));
+      log.info(store.get(`${fileNameSansZip}.reactions.person_id_0`));
+    }
   }
 
   function openModal() {
     setOpen(true);
-    setFilePath('');
     setFileName('');
   }
 
@@ -88,7 +86,7 @@ export default function NewEngagementModal() {
     setTimeout(() => setImportStep(1), 500);
   }
 
-  function backClick(stepN: number) {
+  function backClick() {
     setImportStep((currentStep) => currentStep - 1);
   }
 
@@ -110,7 +108,6 @@ export default function NewEngagementModal() {
 
   function finish() {
     setOpen(false);
-    // setEngagementObject({ participants });
     clearState();
 
     setTimeout(() => setImportStep(1), 500);
@@ -179,7 +176,9 @@ export default function NewEngagementModal() {
                             name="file-upload"
                             type="file"
                             className="sr-only"
-                            onChange={(e) => handleFiles(e)}
+                            onChange={(e) =>
+                              handleFiles(e.target as HTMLInputElement)
+                            }
                           />
                         </label>
                         <p className="pl-1">{filename || 'or drag and drop'}</p>
@@ -227,7 +226,11 @@ export default function NewEngagementModal() {
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                         placeholder=""
                         value={engagementName}
-                        onInput={(e) => setEngagementName(e.target.value)}
+                        onInput={(e) =>
+                          setEngagementName(
+                            (e.target as HTMLInputElement).value
+                          )
+                        }
                       />
                     </div>
                     <label
@@ -244,7 +247,11 @@ export default function NewEngagementModal() {
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                         placeholder=""
                         value={engagementLocation}
-                        onInput={(e) => setEngagementLocation(e.target.value)}
+                        onInput={(e) =>
+                          setEngagementLocation(
+                            (e.target as HTMLInputElement).value
+                          )
+                        }
                       />
                     </div>
                     <label
@@ -261,7 +268,11 @@ export default function NewEngagementModal() {
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                         placeholder=""
                         value={engagementTags}
-                        onInput={(e) => setEngagementTags(e.target.value)}
+                        onInput={(e) =>
+                          setEngagementTags(
+                            (e.target as HTMLInputElement).value
+                          )
+                        }
                       />
                     </div>
                     <label
@@ -279,7 +290,9 @@ export default function NewEngagementModal() {
                         placeholder=""
                         value={engagementDescription}
                         onInput={(e) =>
-                          setEngagementDescription(e.target.value)
+                          setEngagementDescription(
+                            (e.target as HTMLInputElement).value
+                          )
                         }
                       />
                     </div>
@@ -294,7 +307,7 @@ export default function NewEngagementModal() {
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                        onClick={() => backClick(2)}
+                        onClick={() => backClick()}
                         ref={cancelButtonRef}
                       >
                         Back
@@ -322,7 +335,11 @@ export default function NewEngagementModal() {
                               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                               placeholder=""
                               value={contactName}
-                              onInput={(e) => setContactName(e.target.value)}
+                              onInput={(e) =>
+                                setContactName(
+                                  (e.target as HTMLInputElement).value
+                                )
+                              }
                             />
                           </div>
                         </>
@@ -340,7 +357,7 @@ export default function NewEngagementModal() {
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                        onClick={() => backClick(3)}
+                        onClick={() => backClick()}
                         ref={cancelButtonRef}
                       >
                         Back
@@ -350,9 +367,15 @@ export default function NewEngagementModal() {
                 )) ||
                 (importStep === 4 && (
                   <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-                    {importPhotos.map((imgFilePath, i) => {
+                    {importPhotos.map((imgFilePath) => {
                       return (
                         <>
+                          <img
+                            src={imgFilePath}
+                            width={30}
+                            height={30}
+                            alt="contact"
+                          />
                           <div className="mt-1">Finalize details page</div>
                         </>
                       );
@@ -370,7 +393,7 @@ export default function NewEngagementModal() {
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                        onClick={() => backClick(3)}
+                        onClick={() => backClick()}
                         ref={cancelButtonRef}
                       >
                         Back

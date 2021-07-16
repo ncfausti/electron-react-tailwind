@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import log from 'electron-log';
-import { fmtTime, extractZip, getAllFiles } from '../utils/index';
+import { fmtTime, extractZip, getAllFiles, DataStore } from '../utils/index';
 
 describe('fmtTime', () => {
   it('should transform time from datetime to human readable time', () => {
@@ -31,5 +31,15 @@ describe('unzip compressed conversation file', () => {
     } catch (err) {
       log.error(`Error while deleting ${loc}.`);
     }
+  });
+});
+
+describe('datastore functions', () => {
+  test('allContacts endpoint is available', () => {
+    const store = DataStore();
+    expect(store.getAllContacts().length).toBeGreaterThanOrEqual(0);
+    const uid = store.addContact({ name: 'abc', photo: 'img.jpg' });
+    expect(store.getAllContacts().length).toBeGreaterThanOrEqual(1);
+    expect(store.getContactById(uid).name).toBe('abc');
   });
 });
